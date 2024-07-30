@@ -1,0 +1,65 @@
+<%- include('./partials/header') %>
+
+<% if (success && success.length > 0) { %>
+    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-blue-500">
+        <span class="inline-block text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+<div class="min-h-screen flex">
+    <div class="w-1/4 px-10 py-20 flex flex-col items-start">
+        <div class="mb-8">
+            <h3 class="mb-2">Sort by</h3>
+            <form action="/shop" method="get">
+                <select class="border px-2 py-1" name="sortby" id="sortby">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="mb-4">Categories</h3>
+            <a class="block mb-2" href="/shop?category=new">New Collection</a>
+            <a class="block mb-2" href="/shop?category=all">All Products</a>
+            <a class="block mb-2" href="/shop?category=discount">Discounted Products</a>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="mb-4">Filter by</h3>
+            <a class="block mb-2" href="/shop?filter=availability">Availability</a>
+            <a class="block mb-2" href="/shop?filter=discount">Discount</a>
+        </div>
+    </div>
+
+    <div class="w-3/4 px-10 py-20 flex flex-col gap-8">
+        <% if (products && products.length > 0) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% products.forEach(function(product) { %>
+                    <div class="flex flex-col items-center">
+                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                            <img class="h-48 object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                        </div>
+                        <div class="w-full bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>] p-4 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-lg"><%= product.name %></h3>
+                                <h4 class="text-xl">₹ <%= product.price %></h4>
+                            </div>
+                            <a href="/addtocart/<%= product._id %>" class="w-8 h-8 flex items-center justify-center rounded-full bg-white">
+                                <i class="ri-add-line"></i>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center">
+                <h2 class="text-2xl font-bold">No products found</h2>
+                <p>Try adjusting your search or filter to find what you're looking for.</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>
